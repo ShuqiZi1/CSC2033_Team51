@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- Admin page -->
+    <section id="settings-container">
+        <!-- tab box -->
+        <div class="settings-tabs">
+            <div id="1" class="settings-tab settings-tab-active" onClick="tab_switch_function(1)">Manage Users</div>
+            <div id="2" class="settings-tab" onClick="tab_switch_function(2)">Manage Posts</div>
+            <div id="3" class="settings-tab" onClick="tab_switch_function(3)">Send SMS and Email</div>
+            <div id="4" class="settings-tab" onClick="tab_switch_function(4)">View Logs</div>
+        </div>
+        <!-- content -->
+        <div class="settings-contents">
+            <!-- Manage Users -->
+            <div id="content1" class="settings-content settings-content-active">
+                <div class="admin_content1_wrap">
+                    <!-- ban user/enable user -->
+                    <form method="post" action="/ban_user">
+                    <div class="admin_ban_user">
+                        <h5>Disable/enable users:</h5>
+                        <input class="admin_ban_text" name="ban_input" type="text" placeholder="Please enter the user id.">
+                        <button class="admin_ban_btn">Change Ban</button>
+                    </div>
+                    </form>
+                    <!-- show all users information -->
+                    <div class="admin_view_all_users">
+                        <h5>Show all users:</h5>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="col1">UserId</th>
+                                    <th class="col2">Username</th>
+                                    <th class="col3">Email</th>
+                                    <th class="col4">Role</th>
+                                    <th class="col5">Ban</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users %}
+                                    {% if not user.role == "Admin" %}
+                                    <tr>
+                                        <td class="col1">{{ user.user_id }}</td>
+                                        <td class="col2">{{ user.username }}</td>
+                                        <td class="col3">{{ user.email }}</td>
+                                        <td class="col4">{{ user.role }}</td>
+                                        {% if user.ban == 1 %}
+                                            <td class="col5">disable</td>
+                                        {% else %}
+                                            <td class="col5">enable</td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Manage Posts -->
+            <div id="content2" class="settings-content">
+                <div class="admin_content1_wrap">
+                <form method="post" action="/handle_post">
+                    <!-- delete post -->
+                    <div class="admin_ban_user">
+                        <h5>Delete Posts:</h5>
+                        <input class="admin_ban_text" name="post_input" type="text" placeholder="Please enter the post id.">
+                        <button class="admin_ban_btn">Delete</button>
+                    </div>
+                </form>
+                    <!-- show all posts -->
+                    <div class="admin_view_all_users">
+                        <h5>Show all posts info:</h5>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="col1">PostId</th>
+                                    <th class="col2">PostTitle</th>
+                                    <th class="col3">UserId</th>
+                                    <th class="col4">PostTime</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for post in posts %}
+                                <tr>
+                                    <td class="col-pid">{{ post.post_id }}</td>
+                                    <td class="col-ptitle">{{ post.title }}</td>
+                                    <td class="col-puserid">{{ post.user_id }}</td>
+                                    <td class="col-ptime">{{ post.post_time }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Send SMS and Email -->
+            <div id="content3" class="settings-content">
+                <!-- design email content for user -->
+                <div class="admin_content1_wrap">
+                    <div class="admin_message_wrap">
+                        <div class="admin_message_box">
+                            <h5>Sending emails to users:</h5>
+                            <form method="post" action="/send_email">
+                            {{ form.select(class="admin_ban_text admin_select_box") }}
+                            <span>Select the email type to be sent.</span>
+                             {{ form.title(class="admin_ban_text admin_send_email_title",placeholder="Email title") }}
+                              {{ form.body(class="admin_ban_text admin_send_email_body", type="textarea") }}
+                            <button class="admin_ban_btn">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- View Logs -->
+            <div id="content4" class="settings-content ">
+                <div class="admin_content1_wrap">
+                    <div class="admin_ban_user">
+                        <h5>View logs:</h5>
+                        <table>
+                        {% for entry in logs %}
+                            <tr>
+                                <td>{{ entry }}</td>
+                            </tr>
+                        {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+    /* function for switch tabs */
+    function tab_switch_function(rank){
+        $('.settings-tab').removeClass('settings-tab-active');
+        $('#'+rank).addClass('settings-tab-active');
+        $('.settings-content').removeClass('settings-content-active');
+        $('#content'+rank).addClass('settings-content-active');
+    }
+    </script>
+{% endblock %}

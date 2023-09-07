@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- Chatroom page -->
+    <section id="chatroom-container">
+        <!-- heading -->
+        <h1>Chatroom</h1>
+        <div class="chatroom-wrap">
+            <div class="chatroom-box">
+                    {% for chatroom in chats|reverse %}
+                    <!-- chatroom message box -->
+                    <div class="chatroom-message">
+                        {# get the poster's username from the Users table #}
+                        <!-- username -->
+                        <div class="chatroom-username">{{ chatroom.get_username(chatroom.user_id) }}</div>
+                        <!-- content -->
+                        <div class="chatroom-content">{{ chatroom.content }}<br />
+                            <!-- time -->
+                            <span class="chatroom-time">{{ chatroom.post_time.strftime('%d-%m-%Y') }}</span></div>
+                    </div>
+                    {% endfor %}
+            </div>
+            <div class="chatroom-self-message">
+                <form method="POST">
+                    {{ form.csrf_token() }}
+                    <!-- input box for self message -->
+                    <div style="float:left">{{ form.message(class="chatroom-input-box", placeholder="Message Chatroom") }}</div>
+                    <div style="float:left">{{ form.submit(class="chatroom-btn") }}</div>
+                    {% for error in form.message.errors %}
+                        {{ error }}
+                    {% endfor %}
+                    <!-- submit -->
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}

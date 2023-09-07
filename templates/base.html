@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- cite from: Start Bootstrap https://startbootstrap.com/theme/agency -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Gather</title>
+        <!-- icon-->
+        <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='/img/Gather_logo.png') }}" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Oswald:wght@500&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        <!-- jQuery -->
+		<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{{ url_for('static', filename='/css/styles.css') }}" rel="stylesheet" />
+        <link href="{{ url_for('static', filename='/css/styles_nm.css') }}" rel="stylesheet" />
+    </head>
+    <body id="page-top">
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+            <div class="container">
+                <a class="navbar-brand" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='/img/Gather.png') }}" alt="Gather" style="width:148.2px;height:68.7px;margin-top: 0;" /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars ms-1"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                        <!--everyone can access to index page-->
+                        <!--<li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Information</a></li>-->
+                        <!--only authenticated user can access other page-->
+                        {% if current_user.is_authenticated %}
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('post.feed') }}">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('topics') }}">Topics</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('post.create') }}">Post</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('chatroom.chatroom') }}">Chatroom</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('profiles.profiles', username=current_user.username) }}">Profile</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('search.search') }}">Search</a></li>
+                        {% endif %}
+                        <!-- only admin user can access to admin page -->
+                        {% if current_user.is_authenticated and current_user.role=='admin'%}
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.admin') }}">Admin</a></li>
+                        {% endif %}
+                        <!--only unauthenticated user can access sign in and sign up page-->
+                        {% if not current_user.is_authenticated %}
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('users.login') }}">Sign In</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('users.register') }}">Register</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        {% block content %}
+        {% endblock %}
+        <!-- Footer -->
+		  <footer class="bg-white">
+			<div class="container py-5">
+			  <div class="row py-4">
+				<div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                  <!-- goals for our website -->
+				  <p class="font-italic text-muted"><i>Gather's goal is to work towards bringing people,
+                      companies, and charities together and reinvigorating global partnerships for sustainable development.</i></p>
+				</div>
+				<div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                  <!-- provide services -->
+				  <h6 class="text-uppercase font-weight-bold mb-4">Services</h6>
+				  <ul class="list-unstyled mb-0">
+					<li class="mb-2"><a href="{{ url_for('search.search') }}" class="text-muted">Search</a></li>
+					<li class="mb-2"><a href="{{ url_for('contact.contact') }}" class="text-muted">Contact us</a></li>
+				  </ul>
+				</div>
+				<div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                  <!-- provide quick links -->
+				  <h6 class="text-uppercase font-weight-bold mb-4">Quick links</h6>
+				  <ul class="list-unstyled mb-0">
+					<li class="mb-2"><a href="{{ url_for('quiz.quiz') }}" class="text-muted">Quiz</a></li>
+					<li class="mb-2"><a href="{{ url_for('index') }}" class="text-muted">Info</a></li>
+				  </ul>
+				</div>
+				<div class="col-lg-4 col-md-6 mb-lg-0">
+                  <!-- Website email  -->
+				  <h6 class="text-uppercase font-weight-bold mb-4">NEWSLETTER</h6>
+				  <p class="text-muted mb-4">If you have any concerns about our website, please send us an email</p>
+				  <div class="p-1 rounded border">
+					<div class="input-group">
+					  <input type="email" placeholder="gblpartnershipncl@ncl.ac.uk" aria-describedby="button-addon1"
+                             class="form-control border-0 shadow-0" disabled="disabled">
+					  <div class="input-group-append">
+                        <!-- contact us -->
+						<button id="button-addon1" type="submit" class="btn btn-link">
+                            <a href="{{ url_for('contact.contact') }}"><i class="fa fa-paper-plane"></i></a>
+                        </button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+
+			<!-- Copyrights -->
+			<div class="bg-light py-4">
+			  <div class="container text-center">
+				<p class="text-muted mb-0 py-2">© 2022 Gather Newcastle All rights reserved.</p>
+			  </div>
+			</div>
+		  </footer>
+		  <!-- End -->
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"></script>
+        <!-- Core theme JS-->
+        <script src="{{ url_for('static', filename='/js/scripts.js') }}" ></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" ></script>
+        <!-- import SB Forms JS -->
+        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    </body>
+</html>

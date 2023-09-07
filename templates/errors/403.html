@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- error page -->
+    <div id="error-box">
+        <div class="error-box">
+            <div class="error-content">
+                <!-- error number -->
+                <h1>403</h1>
+            </div>
+            <!-- error message -->
+            <h2>We are sorry, access forbidden!</h2>
+            <p>You don't have permission to access this page.</p>
+            <a href="{{ url_for('index') }}">Back to Homepage</a>
+        </div>
+    </div>
+
+{% endblock %}

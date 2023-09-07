@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- Search page -->
+        <!-- search page container -->
+		<!-- search page background -->
+		<div class="search-bg">
+			<div class="search-box">
+				<!-- search title -->
+				<span class="search-title">Explore what you want to know</span>
+				<form method="POST">
+				<div class="search-box-bg">
+					<div class="search-wrap">
+						{{ form.csrf_token() }}
+						<!-- search text box -->
+                        <div>{{ form.search(class="search-txt", placeholder="Search for blogs, charity actions and more...") }}</div>
+					    <!-- search button -->
+                        <div class="search-btn-wrap">{{ form.submit(class="search-btn", value="") }}</div>
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+{% endblock %}

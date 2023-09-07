@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- Sign in page -->
+    <div class="sign-in-form">
+        <img src="https://www.nicepng.com/png/detail/128-1280406_view-user-icon-png-user-circle-icon-png.png" alt="sign in logo">
+        <!-- heading -->
+        <h2>SIGN IN NOW</h2>
+
+        <form method="POST">
+            {% with messages = get_flashed_messages() %}
+                {% if messages or form.username.errors or form.password.errors or form.pin_key.errors %}
+                    <!-- show dangerous message -->
+                    <div class="sign-in-dangerous-message">
+                        {% if messages %}
+                            {{ messages[0] }}
+                        {% endif %}
+                        {% for error in form.username.errors %}
+                            {{ error }}
+                        {% endfor %}
+                        {% for error in form.password.errors %}
+                            {{ error }}
+                        {% endfor %}
+                        {% for error in form.pin_key.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        <!-- login attempt less than 3 times -->
+        {% if not session['logins'] or session['logins'] < 3 %}
+            {{ form.csrf_token() }}
+            <!-- login content -->
+            {{ form.username(class="input-box sign-in-box",id="username", placeholder="Your email") }}
+            {{ form.password(class="input-box sign-in-box",id="password", placeholder="Your password") }}
+            {{ form.pin_key(class="input-box sign-in-box", placeholder="Time-Based PIN") }}
+            <!-- <p class="rem-me"><span><input type="checkbox" value="remember-me" id="remember_me"></span> Remember me </p> -->
+            {{ form.submit(class="sign-btn signin-btn") }}
+            <!-- link to Sign up page -->
+            <p>Do you have an account ? <a href="{{ url_for('users.register') }}">Sign Up</a></p>
+        </form>
+        {% endif %}
+    </div>
+     <script>
+        /* function for remember username and password */
+        $(function() {
+
+            if (localStorage.chkbx && localStorage.chkbx != '') {
+                $('#remember_me').attr('checked', 'checked');
+                $('#username').val(localStorage.usrname);
+                $('#password').val(localStorage.pass);
+            } else {
+                $('#remember_me').removeAttr('checked');
+                $('#username').val('');
+                $('#password').val('');
+            }
+
+            $('#remember_me').click(function() {
+
+                if ($('#remember_me').is(':checked')) {
+                    // save username and password
+                    localStorage.usrname = $('#username').val();
+                    localStorage.pass = $('#password').val();
+                    localStorage.chkbx = $('#remember_me').val();
+                } else {
+                    localStorage.usrname = '';
+                    localStorage.pass = '';
+                    localStorage.chkbx = '';
+                }
+            });
+        });
+
+     </script>
+{% endblock %}

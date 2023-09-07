@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- Sign up page -->
+    <div class="sign-up-form">
+        <img src="https://www.nicepng.com/png/detail/128-1280406_view-user-icon-png-user-circle-icon-png.png" alt="sign up logo">
+        <!-- heading -->
+        <h2>SIGN UP NOW</h2>
+        <form method="POST">
+            {{ form.csrf_token() }}
+            {% with messages = get_flashed_messages() %}
+                {% if messages or form.username.errors or form.email.errors or form.password.errors or
+                form.confirm_password.errors or form.pin_key.errors or form.firstname.errors or form.lastname.errors %}
+                    <!-- show dangerous message -->
+                    <div class="sign-in-dangerous-message">
+                        {% if messages %}
+                            {{ messages[0] }}. Go to <a href="{{ url_for('users.login') }}">login page</a>
+                        {% endif %}
+                        {% for error in form.username.errors %}
+                            {{ error }}
+                        {% endfor %}
+                        {% for error in form.email.errors %}
+                            {{ error }}
+                        {% endfor %}
+                        {% for error in form.firstname.errors %}
+                            {{ error }}
+                        {% endfor %}
+                        {% for error in form.lastname.errors %}
+                            {{ error }}
+                        {% endfor %}
+                        {% for error in form.password.errors %}
+                            {{ error }}
+                        {% endfor %}
+                        {% for error in form.confirm_password.errors %}
+                            {{ error }}
+                        {% endfor %}
+                        {% for error in form.pin_key.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <!-- register information -->
+            {{ form.username(class="input-box sign-up-input-box", placeholder="Username") }}
+            {{ form.email(class="input-box sign-up-input-box", placeholder="Email") }}
+            {{ form.firstname(class="input-box sign-up-input-box", placeholder="First Name") }}
+            {{ form.lastname(class="input-box sign-up-input-box", placeholder="Last Name") }}
+            {{ form.password(class="input-box sign-up-input-box", placeholder="Password") }}
+            {{ form.confirm_password(class="input-box sign-up-input-box", placeholder="Confirm Password") }}
+            {{ form.role(class="input-box sign-up-select-box") }}
+            {{ form.pin_key(class="input-box sign-up-input-box", value=otp) }}
+            <!-- update authy for two authenticate -->
+            <p class="authy"><b>Set up One Time Password generator</b><br />
+                Download <a href="https://authy.com/download/" target="_blank"><u>Authy</u></a> on your device. Select
+                add new account. Enter your PIN key. Enter name for new account. Select token length of 6. </p>
+            {{ form.submit(class="sign-btn signin-btn") }}
+            <!-- link to Sign in page -->
+            <p> Already have an account? <a href="{{ url_for('users.login') }}">Sign In</a></p>
+        </form>
+    </div>
+{% endblock %}

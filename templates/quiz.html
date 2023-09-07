@@ -1,0 +1,57 @@
+<!doctype html>
+<!-- Quiz page -->
+<html style="height:100%;">
+    <head>
+    <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>quiz</title>
+    <link href="../static/css/styles_nm.css" rel="stylesheet" type="text/css">
+    </head>
+    <body style="height:100%;">
+        <div class="quiz-container">
+            <div class="quiz-box">
+            <form method="POST" action="/next_question">
+                <!-- heading -->
+                <h3>Quiz</h3>
+                <!-- quiz content -->
+                {% if quiz_btn_txt == "Next" %}
+                    <!-- question No -->
+                    <h5>Question {{ question_no }}</h5>
+                    <!-- question content -->
+                    <span class="quiz-question">{{ question }}</span>
+                    <!-- answer 1 -->
+                    <input type="radio" id="ans1" name="answer" value="1">
+                    <label for="ans1">{{ ans1 }}</label>
+                    <br />
+                    <!-- answer 2 -->
+                    <input type="radio" id="ans2" name="answer" value="2">
+                    <label for="ans2">{{ ans2 }}</label>
+                    <br />
+                    <!-- answer 3 -->
+                    <input type="radio" id="ans3" name="answer" value="3">
+                    <label for="ans3">{{ ans3 }}</label>
+                    <!-- url for question -->
+                    <p>Question from: <a href=" {{ link }}" class="quiz-link">{{ link }}</a></p>
+                {% endif %}
+                <!-- score -->
+                <p>Your score: {{ score }}</p>
+                <!-- answer feedback -->
+                <p class = "answer-txt">{{ answer_txt }}</p>
+                <!-- Determine the display text and return value of the button -->
+                {% if quiz_btn_txt == "Next" %}
+                    <div>
+                        <button class="quiz-btn">{{ quiz_btn_txt }}</button>
+                    </div>
+                {% else %}
+                    <div>
+                        <button class="quiz-btn"><a style="color: white;" href="{{ url_for('index') }}">{{ quiz_btn_txt }}</a></button>
+                    </div>
+                {% endif %}
+                    <div>
+                        <div><a class="quiz-btn-a quiz-return-home-page" href="{{ url_for('index') }}"> Return to info page</a></div>
+                    </div>
+            </form>
+            </div>
+        </div>
+    </body>
+</html>

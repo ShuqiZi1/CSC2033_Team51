@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- Home page -->
+        <!-- video for goal 17 -->
+        <section class="main">
+            <div class="container">
+                <video id="background-video" autoplay loop muted poster="https://assets.codepen.io/6093409/river.jpg">
+                    <source src="https://www.data4sdgs.org/themes/gesso/images/videos/video-hero.mp4" type="video/mp4">
+                </video>
+                <!-- main title -->
+                <div class="main-heading text-uppercase">Partnership for the goals.</div>
+                <!-- sub title -->
+                <div class="main-subheading">Strengthen the means of implementation and revitalize the global partnership for sustainable development.</div>
+                <a class="btn btn-primary btn-xl text-uppercase" href="#introduction">More Information</a>
+            </div>
+        </section>
+		<section class="index-introduction" id="introduction">
+            <!-- Aphorisms -->
+			<div class="index-intro-box intro-box-extend-1">
+				<p class="index-intro-content" style="margin-top: 3%;">The Sustainable Development Goals are more important now than ever. Now is the time to secure the well-being of people, economies, societies and our planet. </p>
+				<p class="index-intro-name">António Guterres <br />
+					Secretary-General, United Nations</p>
+				<div class="index-intro-margin"></div>
+				<p >Source: <a class="index-intro-source" href="https://unstats.un.org/sdgs/report/2021/">Progress towards the Sustainable Development Goals</a></p>
+			</div>
+            <!-- Introduction -->
+			<div class="index-intro-box intro-box-extend-2">
+				<h3 style="margin-top: 0; margin-bottom: 5%;">Introduction</h3>
+				<p class="index-intro-content" style="font-size: 1.1rem;">The Global Partnership for Sustainable Development Data is a multi-stakeholder network of more than 300 data champions working to galvanize political commitments, align strategic priorities, foster collaboration, spur innovations, build capacity and enhance trust in the booming data ecosystems of the 21st century.</p>
+				<div style="margin: 8%;"></div>
+				<p >Source: <a class="index-intro-source" href="https://www.linkedin.com/company/global-partnership-for-sustainable-development-data">Linked in</a></p>
+			</div>
+            <!-- Quiz -->
+			<div class="index-intro-box intro-box-extend-3">
+				<div class="index-intro-btn"><a href="{{ url_for('quiz.quiz') }}">START QUIZ !</a></div>
+			</div>
+		</section>
+{% endblock %}

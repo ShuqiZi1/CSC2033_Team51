@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- user info -->
+      <section id="user-profile">
+         <!-- user profile image -->
+         <div class="user-profile-img-box">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTN2daTXDiaP8FSM7TKmVmGnQrV0v_gH8YBAq0AvE0PHBzibzftwQkpG7m1a56sc0SvvSE&usqp=CAU" class="profile-img" alt="user profile">
+         </div>
+         <!-- user profile details -->
+         <div class="profile-txt">
+            <!-- username -->
+            <span class="profile-username">{{ user.firstname }} {{ user.lastname }}</span>
+            <!-- follow & unfollow & settings -->
+            <div class="profile-btn-box">
+            {% if user.user_id == current_user.user_id %}
+                    <button class="profile-btn-follow"><a href="/settings" style="color: white; font-size: medium;">
+                        <i class="fas fa-cog"></i></a></button>
+                    <div class="profile-btn-logout-box">
+                        <button class="profile-btn-unfollow"><a href="/logout" style="color: black;">Log out</a></button>
+                    </div>
+            {% else %}
+                <div class="profile-follow-box">
+                {% if current_user.is_following(user) %}
+                    <form action="{{ url_for('profiles.unfollow', username=user.username) }}">
+                        <input type="submit" class="profile-btn-unfollow" value="Unfollow" />
+                    </form>
+                {% else %}
+                    <form action="{{ url_for('profiles.follow', username=user.username) }}">
+                        <input type="submit" class="profile-btn-follow" value="Follow" />
+                    </form>
+                {% endif %}
+                </div>
+            {% endif %}
+            </div>
+                <div class="section-subheading">
+                    <span><a>{{ counts[0] }} posts</a></span>
+                 <span><a href="#">{{ counts[1] }}</a> followers</span>
+                 <span><a href="#">{{ counts[2] }}</a> following</span>
+                </div>
+         <!-- followers No. & following No. -->
+            </div>
+         </div>
+      </section>
+		<!-- like posts & my posts -->
+		<section id="user-post">
+			<div class="tabs">
+				<hr />
+				<!-- tabs side bar -->
+				<div class="tabs-siderbar">
+					<button id="0" class="profile-btn profile-buttons-active" onClick=" tab_switch_function(0)"><i class="fab fa-blogger"></i> Posts</button>
+					<button id="1" class="profile-btn" onClick=" tab_switch_function(1)"><i class="far fa-heart"></i> Likes</button>
+				</div>
+				<!-- tabs content -->
+				<div class="profile-post-block">
+					<div id="content0" class="profile-tabs-content profile-tabs-content-active">
+						<!-- posts wrap -->
+						<div class="profile-post-wrap">
+							<!-- create new post -->
+							{% if current_user == user %}
+							<div class="my-post-wrap">
+								<a class="new-post-box" href="/create" style="padding-top: 60px;"><i class="fas fa-plus"></i></a>
+							</div>
+							{% endif %}
+							<!-- my post -->
+                            {% for my_post in my_posts %}
+							<div class="my-post-wrap">
+								<a class="new-post-box" href="/post/{{ my_post.post_id }}">
+									<span class="profile-post-day">{{ my_post_days[loop.index0] }}</span>
+									<span class="profile-post-date">{{ my_post_years_months[loop.index0] }}</span>
+									<h3 class="profile-post-title">{{ my_post.title }}</h3>
+								</a>
+							</div>
+                            {% endfor %}
+						</div>
+					</div>
+					<div id="content1" class="profile-tabs-content">
+						<!-- posts wrap -->
+						<div class="profile-post-wrap">
+                            <!-- liked post -->
+							{% for liked_post in liked_posts %}
+							<div class="my-post-wrap">
+								<a class="new-post-box" href="/post/{{ liked_post.post_id }}">
+									<span class="profile-post-day">{{ liked_post_days[loop.index0] }}</span>
+									<span class="profile-post-date">{{ liked_post_years_months[loop.index0] }}</span>
+									<h3 class="profile-post-title">{{ liked_post.title }}</h3>
+								</a>
+							</div>
+                            {% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<script>
+		function tab_switch_function(rank){
+			$('.profile-btn').removeClass('profile-buttons-active');
+			$('#'+rank).addClass('profile-buttons-active');
+			$('.profile-tabs-content').removeClass('profile-tabs-content-active');
+			$('#content'+rank).addClass('profile-tabs-content-active');
+		}
+		</script>
+{% endblock %}

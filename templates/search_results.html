@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- Search result page -->
+		<section class="search-result-container">
+
+			<div class="search-result-contents">
+                <!-- search number of results -->
+
+                {% if count > 0 %}
+                    <div class="search-result-num"><i>{{ count }} results</i></div>
+                    {% for post in post_results %}
+                        <!-- item -->
+                        <div class="search-result-item">
+                            <!-- action type -->
+                            <div class="search-result-type"><b>Post</b></div>
+                            <!-- action title -->
+                            <div class="search-result-item-title"><a href="/post/{{ post.post_id }}">{{ post.title }}</a></div></a>
+                            <!-- charity name -->
+                            <div class="search-result-item-username">{{ post.get_username(post.user_id) }}</div>
+                            <!-- date & time -->
+                            <div class="search-result-item-date">{{ post.post_time }}</div>
+                            <!-- if it's a charitable act, display the location -->
+                            {% if post.location %}
+                                <div class="search-result-item-date">{{ post.location }}</div>
+                            {% endif %}
+                            <!-- action content -->
+                            <div class="search-result-body">{{ post.body }}</div>
+                        </div>
+                    {% endfor %}
+
+                    {% for user in user_results %}
+                        <!-- item -->
+                        <div class="search-result-item">
+                            <!-- result type -->
+                            <div class="search-result-type"><b>User</b></div>
+                            <!-- username -->
+                            <a href="#"><div class="search-result-item-title">{{ user.username }}</div></a>
+                            <!-- real name -->
+                            <div class="search-result-item-date">{{ user.firstname }} {{ user.lastname }}</div>
+                            <!-- registered on -->
+                            <div class="search-result-item-date">{{ user.registered_on }}</div>
+                            <!-- what role are they? -->
+                            <div class="search-result-item-date">{{ user.role }}</div>
+                            <!-- action content -->
+                            <div class="search-result-body"> <a href="{{ url_for('profiles.profiles', username=user.username) }}">See More</a></div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% if count == 0 %}
+                    <div class="search-result-num"><i>Sorry, we couldn't find anything, maybe check your spelling?</i></div>
+                {% endif %}
+			</div>
+		</section>
+{% endblock %}

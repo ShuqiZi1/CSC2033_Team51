@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <!-- topic for charitable actions -->
+        <section class="acts-topic-container">
+			<div class="acts-related-topic">
+                <!-- topic title -->
+				<div><h2>{{ topic }}</h2></div>
+				<h6>Topics</h6>
+			</div>
+            <!-- charitable action -->
+			<div class="acts-topic-contents">
+				<div class="chariable-acts-wrap acts-topic-wrap">
+                    {% for act in acts %}
+					<div class="chariable-acts-tab">
+						<a class="chariable-acts-tab-a" href="#" onClick="popBox()">
+							<!-- post time and date -->
+							<span class="acts-topic-day" style="text-overflow: clip;">{{ days[loop.index0] }}</span>
+							<span class="acts-topic-date">{{ years_months[loop.index0] }}</span>
+							<br />
+                            <!-- charitable action title -->
+							<span class="related-topics acts-topic-topic" href="#">{{ act.title }}</span>
+							<!-- charitable action location -->
+                            <span class="acts-topic-location">{{ act.location }}</span>
+						</a>
+					</div>
+                    <!-- background for popbox -->
+                    <div id="popLayer"></div>
+                    <!-- popbox to show detail for each charitable action -->
+                    <div id="popBox">
+                        <div class="close">
+                            <a href="javascript:void(0)" onclick="closeBox()"><i class="fas fa-times-circle"></i></a>
+                        </div>
+                        <div class="create-post-content acts-feed-contents">
+                            <!-- action date -->
+                            <span class="acts-feed-date">{{ days[loop.index0] }}{{ years_months[loop.index0] }}</span>
+                            <br />
+                            <!-- action title -->
+                            <span class="acts-feed-title">{{ act.title }}</span>
+                            <br />
+                            <!-- action topic -->
+                            <span class="acts-feed-topic">{{ topic }}</span>
+                            <br />
+                            <!-- action body -->
+                            <div  class="acts-feed-body"><span>{{ act.body }}</span></div>
+                            <br />
+                            <!-- action status -->
+                            <span class="acts-feed-label">Status:</span>
+                            <span class="acts-feed-status">{{ act.status }}</span>
+                            <br />
+                            <!-- action location -->
+                            <span class="acts-feed-label">Location:</span>
+                            <span class="acts-feed-location">{{ act.location }}</span>
+                            <!-- link to charity -->
+                            <div class="acts-feed-btn">
+                                <a style="color:white;" href="{{ url_for('profiles.profiles',username=charities_name[loop.index0]) }}">Contact Charity</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+				</div>
+			</div>
+		</section>
+		<script>
+		/* pop up box */
+    	function popBox() {
+        	var popBox = document.getElementById("popBox");
+        	var popLayer = document.getElementById("popLayer");
+        	popBox.style.display = "block";
+        	popLayer.style.display = "block";
+    	}
+
+    	/* close box */
+    	function closeBox() {
+        	var popBox = document.getElementById("popBox");
+        	var popLayer = document.getElementById("popLayer");
+        	popBox.style.display = "none";
+        	popLayer.style.display = "none";
+		}
+		</script>
+{% endblock %}

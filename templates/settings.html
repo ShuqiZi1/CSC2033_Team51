@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <section id="settings-container">
+			<div class="settings-tabs">
+				<div id="1" class="settings-tab settings-tab-active" onClick="tab_switch_function(1)">Edit Profile</div>
+				<div id="2" class="settings-tab" onClick="tab_switch_function(2)">Change Password</div>
+				<div id="3" class="settings-tab" onClick="tab_switch_function(3)">Email and SMS</div>
+			</div>
+			<div class="settings-contents">
+				<div id="content1" class="settings-content settings-content-active">
+					<div class="settings-wrap">
+						<a href="#">
+							<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTN2daTXDiaP8FSM7TKmVmGnQrV0v_gH8YBAq0AvE0PHBzibzftwQkpG7m1a56sc0SvvSE&usqp=CAU" class="settings-user-img" alt="user profile">
+						</a>
+                        <form method="POST">
+                        {{ user_settings.csrf_token() }}
+						<div class="settings-username">{{ current_user.firstname }} {{ current_user.lastname }}</div>
+						<a href="#" class="settings-change-profile-photo">Change profile photo</a>
+						<div class="settings-input-title">Username</div>
+                        {{ user_settings.username(class="settings-input-box", value=current_user.username) }}
+						<div class="settings-input-title">First name</div>
+                        {{ user_settings.firstname(class="settings-input-box", value=current_user.firstname) }}
+						<div class="settings-input-title">Last name</div>
+                        {{ user_settings.lastname(class="settings-input-box", value=current_user.lastname) }}
+						<div class="settings-input-title">Social media</div>
+                        {{ user_settings.social_media(class="settings-input-box", value=current_user.social_media) }}
+						<div class="settings-input-title">Phone number</div>
+                        {{ user_settings.phone(class="settings-input-box", value=current_user.phone) }}
+						{{ user_settings.submit(class="settings-submit") }}
+                        </form>
+					</div>
+				</div>
+				<div id="content2" class="settings-content">
+					<div class="settings-wrap settings-content-2">
+                        <form method="POST">
+                        {{ pass_form.csrf_token() }}
+						<div class="settings-input-title">Old password</div>
+                        {{ pass_form.old_password(class="settings-input-box", placeholder="Old password") }}
+						<div class="settings-input-title">New password</div>
+                        {{ pass_form.new_password(class="settings-input-box", placeholder="New password") }}
+						<div class="settings-input-title confirm-new-pwd">Confirm new password</div>
+                        {{ pass_form.new_password_confirm(class="settings-input-box confirm-new-pwd-input-box", placeholder="Confirm new password") }}
+						{{ pass_form.submit(class="settings-submit settings-change-pwd", value="Update Password") }}
+						<a href="#" class="settings-forgoten-pwd">Forgetten password?</a>
+                        </form>
+					</div>
+				</div>
+				<div id="content3" class="settings-content">
+					<div class="settings-wrap">
+						<div class="settings-subscribe">Subscribe to:</div>
+						<input type="checkbox">
+						<div class="settings-email-push">Posts info email</div>
+						<div class="settings-email-push-notice">Monthly recommendation of the latest blog information.</div>
+						<input type="checkbox">
+						<div class="settings-email-push">Charitable actions email</div>
+						<div class="settings-email-push-notice">Monthly recommendation for some information on charitable actions(events).</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<script>
+		function tab_switch_function(rank){
+			$('.settings-tab').removeClass('settings-tab-active');
+			$('#'+rank).addClass('settings-tab-active');
+			$('.settings-content').removeClass('settings-content-active');
+			$('#content'+rank).addClass('settings-content-active');
+		}
+		</script>
+{% endblock %}

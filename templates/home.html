@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- Post feed page -->
+        <section id="feed">
+			<section id="feed-container">
+                <h2 style="margin-bottom: 20px; margin-left: 40px;">POSTS</h2>
+                {% for post in posts %}
+				<div class="feed-body">
+					<div class="feed-text">
+                        <!-- feed heading -->
+						<span class="feed-title">{{ post.title }}</span>
+                        <!-- user profile -->
+						<a href="#"><img class="feed-user-profile" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTN2daTXDiaP8FSM7TKmVmGnQrV0v_gH8YBAq0AvE0PHBzibzftwQkpG7m1a56sc0SvvSE&usqp=CAU" alt="user profile"></a>
+						<ul class="feed-user-wrap">
+                            <!-- username -->
+							<li class="feed-user-inline"><a href="{{ url_for('profiles.profiles', username=post.get_username(post.user_id)) }}">{{ post.get_username(post.user_id) }}</a></li>
+                            <!-- date & time -->
+							<li class="feed-user-inline">{{ post.post_time }}</li>
+                            <li class="feed-user-inline">{{ post.get_likes() }} likes</li>
+                            {% if post.location != "0" %}
+                            <li class="feed-user-inline">{{ type(post.location) }}</li>
+                            {% endif %}
+						</ul>
+{#                        <!-- post image -->#}
+{#						<div class="feed-img-box" href="#">#}
+{#						<img src="../static/img/blog-test.jpg" alt="Post Picture">#}
+{#						</div>#}
+                        <!-- post feed content -->
+						<p class="feed-paragraph">{{ post.body }}</p>
+
+						<div class="feed-update-delete">
+							{% if current_user.user_id == post.user_id %}
+                            	<a class="navbar-item" href="{{ url_for('post.update', post_id=post.post_id) }}">Update</a>
+                            	<a class="navbar-item" href="{{ url_for('post.delete', post_id=post.post_id) }}">Delete</a>
+                            {% endif %}
+							{% if current_user.has_liked(post.post_id) %}
+								<a class="navbar-item" href="{{ url_for('post.toggle_like', post_id=post.post_id) }}">Unlike Post</a>
+							{% else %}
+								<a class="navbar-item" href="{{ url_for('post.toggle_like', post_id=post.post_id) }}">Like Post</a>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</section>
+            <!-- popular feed -->
+			<section id="feed-popular">
+				<div class="feed-popular-container">
+					<div class="feed-popular">
+                        <!-- heading -->
+						<div class="feed-pop-title"><b>Popular Posts</b></div>
+						<br />
+						<!-- popular post 1 -->
+						{% for like in likes %}
+						<div class="pop-post">
+                            <!-- post image -->
+							<a href="#"><img src="../static/img/blog-test.jpg" alt="post img"></a>
+                                <!-- post title -->
+								<div class="pop-post-wrap">
+									<a class="post-title" href="/post/{{ like[0].post_id }}">{{ like[0].title }}</a> </br>
+									<span class="post-title">@{{ like[0].get_user().username }} - {{ like[1] }} likes</span>
+								<br />
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+            </section>
+        </section>
+{% endblock %}
